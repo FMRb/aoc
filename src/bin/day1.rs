@@ -1,17 +1,19 @@
 use anyhow::Result;
 use itertools::Itertools;
 
-fn descending_calculator(size: usize) -> Result<usize> {
-    Ok(aoc::read_one_per_line::<u32>("./data/1.input")?
-        .windows(size)
-        .filter(|w| w[0] < w[size - 1])
-        .collect_vec()
-        .len()
-    )
+fn calories_counter(num_elves: usize) -> Result<u32> {
+    Ok(aoc::read_group_lines::<u32>("./data/1.input")?
+        .iter()
+        .map(|group| group.iter().sum::<u32>())
+        .sorted()
+        .rev()
+        .take(num_elves)
+        .sum())
 }
 
 fn main() -> Result<()> {
-    println!("Part 1: {}", descending_calculator(2)?);
+    println!("Part 1: {}", calories_counter(1)?);
+    println!("Part 2: {}", calories_counter(3)?);
 
     Ok(())
 }
