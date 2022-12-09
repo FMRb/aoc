@@ -1,10 +1,10 @@
 use anyhow::Result;
 use itertools::Itertools;
-use std::str::FromStr;
+use std::{str::FromStr};
 
 pub fn read_one_per_line<T>(path: &str) -> Result<Vec<T>>
 where
-    T: FromStr,
+    T: FromStr 
 {
     Ok(std::fs::read_to_string(path)?
         .lines()
