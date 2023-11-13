@@ -11,15 +11,27 @@ def main():
     group.add_argument("-f","--force", help="force write file even if exists", action="store_true")
     parser.add_argument("-y", "--year", type=int, default=2022)
     parser.add_argument("-d", "--day", type=int, default=1)
+    parser.add_argument("-l", "--file-location", type=str)
+    parser.add_argument("-rn", "--rename", type=str)
     args = parser.parse_args()
 
     dry_run, force = args.dry_run, args.force
     year, day = args.year, args.day
+    location, rename = args.file_location, args.rename
     url = f"https://adventofcode.com/{year}/day/{day}/input"
-    file = f"day{day}.txt"
+    file = "input.txt"
+    if rename:
+        file = f"{rename}.txt"
     if not force and Path(file).exists():
         print(f"{file} already exists")
         return
+
+    if location:
+        l = Path('.') / location
+        if not l.exists():
+            l.mkdir()
+            print(f"Location {l} does not exist. Creating new path {l}")
+        file = f"{location}/{file}"
 
     print(f"{file} = {url}")
 
