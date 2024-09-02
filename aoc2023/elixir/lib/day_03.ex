@@ -58,6 +58,14 @@ defmodule AdventOfCode.Day03 do
       end)
       |> Enum.into(%{})
 
+    number_list =
+      Enum.reduce(schematics, [], fn {idx, numbers, _s}, acc ->
+        acc ++
+          Enum.map(numbers, fn {n, first, last} ->
+            {n, first, last, idx}
+          end)
+      end)
+
     adjacents = [{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}]
 
     symbols =
@@ -78,35 +86,36 @@ defmodule AdventOfCode.Day03 do
 
     total =
       Enum.map(symbols, fn coords ->
-        Enum.reduce(coords, [], fn {x, y}, acc ->
-          parts =
-            Enum.filter(Map.get(map_numbers, y, []), fn {_num, first, last} ->
-              x >= first and x <= last
-            end)
-            |> Enum.map(fn {num, _f, _l} -> num end)
-
-          parts ++ acc
+        Enum.reduce(number_list, [], fn {n, first, last, row}, acc ->
+          if Enum.any?(coords, fn {x, y} ->
+               x >= first and x <= last and y == row
+             end) do
+            [n | acc]
+          else
+            acc
+          end
         end)
       end)
 
-    IO.inspect(total)
+    total =
+      Enum.filter(total, fn hits -> length(hits) == 2 end)
+      |> Enum.map(fn hits -> Enum.product(hits) end)
+      |> Enum.sum()
 
-    # total =
-    #   Enum.reduce(Map.keys(map_numbers), [], fn idx, acc ->
-    #     parts =
-    #       Enum.filter(Map.get(map_numbers, idx), fn {_num, first, last} ->
-    #         flag =
-    #           Enum.any?(symbols, fn {x, y} ->
-    #             y == idx and x >= first and x <= last
-    #           end)
+    IO.inspect(total, label: "Total")
 
-    #         flag
-    #       end)
-    #       |> Enum.map(fn {num, _f, _l} -> num end)
+    ## total =
+    ##   Enum.map(symbols, fn coords ->
+    ##     Enum.reduce(coords, [], fn {x, y}, acc ->
+    ##       parts =
+    ##         Enum.filter(Map.get(map_numbers, y, []), fn {_num, first, last} ->
+    ##           x >= first and x <= last
+    ##         end)
+    ##         |> Enum.map(fn {num, _f, _l} -> num end)
 
-    #     parts ++ acc
-    #   end)
-    #   |> Enum.sum()
+    ##       parts ++ acc
+    ##     end)
+    ##   end)
   end
 
   defp read(path) do
