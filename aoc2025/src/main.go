@@ -1,7 +1,12 @@
 package main
 
-import "github.com/FMRb/aoc-cli/src/day01"
+import (
+	"fmt"
+
+	"github.com/FMRb/aoc-cli/src/day02"
+)
 
 func main() {
-	day01.PartTwo()
+	r := day02.PartTwo()
+	fmt.Println("Results:", r)
 }
