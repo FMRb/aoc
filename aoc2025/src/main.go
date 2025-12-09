@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
-	"github.com/FMRb/aoc-cli/src/day05"
+	"github.com/FMRb/aoc-cli/src/day06"
 )
 
 func main() {
-	rOne := day05.PartOne()
+	rOne := day06.PartOne()
 
 	fmt.Println("Results One:", rOne)
-	rTwo := day05.PartTwo()
+	rTwo := day06.PartTwo()
 	fmt.Println("Results Two:", rTwo)
 }
